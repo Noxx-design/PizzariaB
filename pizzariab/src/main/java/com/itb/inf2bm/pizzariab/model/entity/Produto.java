@@ -1,14 +1,30 @@
 package com.itb.inf2bm.pizzariab.model.entity;
 
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "Produto")
 public class Produto {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
+    @Column(length = 100, nullable = true)
     private String nome;
+    @Column(length = 45, nullable = true)
+    private String tipo;
+    @Column(length = 100, nullable = true)
     private String descricao;
+    @Column(nullable = true, columnDefinition = "DECIMAL(5,2)")
     private double valorCompra;
+    @Column(nullable = true, columnDefinition = "DECIMAL(5,2)")
     private double valorVenda;
+    @Column(nullable = true)
     private int quantidadeEstoque;
-    private  boolean codStatus;
+    @Column(nullable = false)
+    private boolean codStatus;
 
     public Long getId() {
         return id;
@@ -24,6 +40,14 @@ public class Produto {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getDescricao() {
