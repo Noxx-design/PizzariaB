@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /*
@@ -34,9 +35,35 @@ public class ProdutoController {
 
     // Salvar Produto
     @PostMapping
-    public ResponseEntity<Produto> save(@RequestBody Produto produto) {
+    public ResponseEntity<Produto> salvarProduto(@RequestBody Produto produto) {
         Produto novo = produtoService.save(produto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novo);
+    }
+
+    // Buscar  Produto por id
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> buscarProdutoPorId(@PathVariable String id) {
+        try {
+            return ResponseEntity.ok(produtoService.findById(Long.parseLong(id)));
+        }
+        catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(
+                    Map.of(
+                            "status", 400,
+                            "error", "Bad Request",
+                            "message", "O id informado não é valido: " + id
+                    )
+            );
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(
+                    Map.of(
+                            "status", 404,
+                            "error", "Not Found",
+                            "message", "Produto não encontrado com o id: " + id
+                    )
+            );
+        }
     }
 
 
