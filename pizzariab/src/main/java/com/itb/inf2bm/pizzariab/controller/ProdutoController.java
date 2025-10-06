@@ -66,5 +66,29 @@ public class ProdutoController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> atualizarProduto(@PathVariable String id, @RequestBody Produto produto) {
+        try {
+            return ResponseEntity.ok(produtoService.update(Long.parseLong(id), produto));
+        }
+        catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(
+                    Map.of(
+                            "status", 400,
+                            "error", "Bad Request",
+                            "message", "O id informado não é valido: " + id
+                    )
+            );
+        }
+        catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(
+                    Map.of(
+                            "status", 404,
+                            "error", "Not Found",
+                            "message", "Produto não encontrado com o id: " + id
+                    )
+            );
+        }
+    }
 
 }
